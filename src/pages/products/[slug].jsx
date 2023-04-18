@@ -1,18 +1,30 @@
 import Head from 'next/head'
 import Image from 'next/image'
 export default function Products({data}){
-  // const productdata = data;
-  console.log(data);
-  return (<><h1>{data.productdisplayname}</h1>
 
-  
+
+  return (<>
+  <Head>
+    <title>{data.productdisplayname}</title>
+  </Head>
+  <h1>{data.productdisplayname}</h1>
+   <p>{data.productyear}</p>
+   <p>{data.gender}</p>
+   <p>{data.basecolour}</p>
+   <p>{data.brand}</p>
+   <p>{data.price}</p>
+   <p>{data.agegroup}</p>
+ 
+
+
  </>);
 }
-//SERVER SIDE
+//SERVER SIDE - specific have getStaticProps and getStaticPaths fir 
 export async function getStaticProps(context){
-  console.log(context.params)
+
   const id = context.params.slug;
-  
+  const category = context.params;
+  console.log(category, "context");
   const api = "https://kea-alt-del.dk/t7/api/products/" + id
   const res = await fetch(api)
   
@@ -23,7 +35,7 @@ export async function getStaticProps(context){
   }
  }
   const data = await res.json()
-  console.log("data", data)
+
   
   return {
     props: {
@@ -35,7 +47,7 @@ export async function getStaticProps(context){
 //configure and handle SSG (Static server generator)
 //pre-renders page with returned props
 export async function getStaticPaths(){
-  const api = "https://kea-alt-del.dk/t7/api/products";
+  const api = "https://kea-alt-del.dk/t7/api/products/";
   const res = await fetch(api);
   const data = await res.json();
   const paths = data.map((object) => {
